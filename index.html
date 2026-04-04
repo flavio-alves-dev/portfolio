@@ -3,301 +3,515 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flavio Alves da Silva — React Native | PHP | AI</title>
+<title>~/flavio-alves — dev</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#060608;
-  --surface:#0c0c10;
-  --surface2:#111116;
-  --surface3:#1a1a22;
+  --bg:#0b0d0f;
+  --surface:#111418;
+  --surface2:#161b21;
+  --surface3:#1d2229;
   --lime:#b8ff00;
   --lime-dim:rgba(184,255,0,.06);
-  --lime-glow:rgba(184,255,0,.15);
+  --lime-glow:rgba(184,255,0,.18);
   --cyan:#00e5ff;
-  --text:#e8e8f0;
-  --text2:#9898a8;
-  --text3:#5c5c6e;
-  --border:rgba(255,255,255,.06);
-  --r:16px;
+  --text:#cdd6e0;
+  --text2:#7d8fa0;
+  --text3:#475569;
+  --border:rgba(255,255,255,.07);
+  --r:4px;
 }
+
 html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.65}
-::-webkit-scrollbar{width:6px}
+body{
+  font-family:'JetBrains Mono',monospace;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.7;
+}
+
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;z-index:9998;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,.025) 3px,
+    rgba(0,0,0,.025) 4px
+  );
+}
+
+::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+::-webkit-scrollbar-thumb{background:var(--surface3)}
 ::-webkit-scrollbar-thumb:hover{background:var(--lime)}
 
-/* ═══ AMBIENT ═══ */
-.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(150px)}
-.orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(184,255,0,.045),transparent 70%);top:-250px;right:-100px;animation:d1 24s ease-in-out infinite}
-.orb-2{width:550px;height:550px;background:radial-gradient(circle,rgba(0,229,255,.035),transparent 70%);bottom:-200px;left:-100px;animation:d2 28s ease-in-out infinite}
-.orb-3{width:400px;height:400px;background:radial-gradient(circle,rgba(167,139,250,.03),transparent 70%);top:50%;left:40%;animation:d3 20s ease-in-out infinite}
-@keyframes d1{0%,100%{transform:translate(0)}50%{transform:translate(-50px,80px)}}
-@keyframes d2{0%,100%{transform:translate(0)}50%{transform:translate(60px,-50px)}}
-@keyframes d3{0%,100%{transform:translate(0)}50%{transform:translate(-40px,-60px)}}
-
-.grid-pattern{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:72px 72px}
-
 /* ═══ NAV ═══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;
-  backdrop-filter:blur(24px);background:rgba(6,6,8,.8);border-bottom:1px solid var(--border)}
-.nav-logo{font-weight:800;font-size:1.2rem;letter-spacing:-.5px;color:var(--lime)}
-.nav-logo span{color:var(--text3);font-weight:400}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{color:var(--text3);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;transition:color .3s}
-.nav-links a:hover{color:var(--lime)}
-.nav-cta{padding:10px 24px;background:var(--lime);color:var(--bg);border:none;border-radius:50px;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .3s;text-decoration:none}
-.nav-cta:hover{box-shadow:0 0 28px var(--lime-glow);transform:translateY(-1px)}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.nav-titlebar{
+  display:flex;align-items:center;
+  padding:9px 20px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  gap:12px;
+}
+.nav-dots{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.nd{width:11px;height:11px;border-radius:50%}
+.nd-r{background:#ff5f57}
+.nd-y{background:#ffbd2e}
+.nd-g{background:#28c840}
+.nav-path{
+  position:absolute;left:50%;transform:translateX(-50%);
+  font-size:.7rem;color:var(--text3);
+  letter-spacing:.3px;white-space:nowrap;
+}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
 
-/* Pure CSS hamburger */
-#menu-toggle{display:none}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;z-index:101}
-.hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s;display:block}
+/* Language toggle */
+.lang-toggle{display:flex;align-items:center;gap:2px}
+.lt-btn{
+  background:none;border:none;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;font-weight:700;
+  color:var(--text3);cursor:pointer;
+  padding:3px 7px;border-radius:2px;
+  transition:all .2s;letter-spacing:.5px;
+}
+.lt-btn.active{color:var(--lime);background:var(--lime-dim)}
+.lt-btn:hover:not(.active){color:var(--text)}
+.lt-sep{color:var(--surface3);font-size:.65rem;user-select:none}
 
-/* ═══ SECTIONS ═══ */
-main{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 32px}
-section{padding:100px 0}
+.nav-cta{
+  padding:5px 14px;
+  background:var(--lime-dim);
+  color:var(--lime);
+  border:1px solid rgba(184,255,0,.18);
+  border-radius:var(--r);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;font-weight:600;
+  cursor:pointer;transition:all .2s;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.nav-cta::before{content:'$ ';opacity:.5}
+.nav-cta:hover{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+
+.nav-tabbar{
+  display:flex;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav-tabbar::-webkit-scrollbar{display:none}
+.nav-tabbar a{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;
+  font-size:.7rem;color:var(--text3);
+  text-decoration:none;
+  border-right:1px solid var(--border);
+  transition:all .2s;
+  white-space:nowrap;
+  letter-spacing:.3px;
+}
+.nav-tabbar a:first-child{border-left:1px solid var(--border)}
+.nav-tabbar a:hover,.nav-tabbar a.active{color:var(--lime);background:var(--lime-dim)}
+.nav-tabbar a.active{border-bottom:1px solid var(--lime)}
+.tab-sym{color:var(--text3);font-size:.65rem;transition:color .2s}
+.nav-tabbar a:hover .tab-sym,.nav-tabbar a.active .tab-sym{color:var(--lime)}
+
+/* ═══ LAYOUT ═══ */
+main{
+  max-width:840px;margin:0 auto;
+  padding:0 28px;
+  padding-top:80px;
+}
+section{padding:80px 0}
+
+/* ═══ SECTION HEADER ═══ */
+.sec-cmd{
+  display:flex;align-items:center;gap:0;
+  margin-bottom:6px;
+  font-size:.78rem;
+}
+.sc-user{color:var(--lime);font-weight:700}
+.sc-sep{color:var(--text3)}
+.sc-host{color:var(--cyan)}
+.sc-sym{color:var(--lime);margin:0 6px}
+.sc-text{color:var(--text)}
+.sec-line{height:1px;background:var(--border);margin-bottom:36px}
+.sec-output{border-left:2px solid var(--surface3);padding-left:20px}
 
 /* ═══ HERO ═══ */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:72px}
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding-top:20px;padding-bottom:40px;
+}
+.term-window{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px rgba(184,255,0,.04);
+}
+.term-bar{
+  display:flex;align-items:center;gap:7px;
+  padding:11px 16px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+}
+.tb-dot{width:11px;height:11px;border-radius:50%}
+.tb-r{background:#ff5f57}.tb-y{background:#ffbd2e}.tb-g{background:#28c840}
+.tb-title{
+  font-size:.68rem;color:var(--text3);
+  margin:0 auto;transform:translateX(-18px);
+}
+.term-body{padding:32px 36px 40px}
 
-.hero-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:50px;
-  background:var(--lime-dim);border:1px solid rgba(184,255,0,.12);width:fit-content;margin-bottom:32px;
-  animation:fadeUp .7s .2s both}
-.hero-badge .pulse{width:8px;height:8px;background:var(--lime);border-radius:50%;animation:blink 2s infinite}
-.hero-badge span{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--lime);font-weight:500}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.h-line{
+  display:flex;align-items:baseline;gap:10px;
+  margin-bottom:8px;
+  opacity:0;animation:fadeUp .4s forwards;
+}
+.h-line.d1{animation-delay:.1s}
+.h-line.d2{animation-delay:.5s}
+.h-line.d3{animation-delay:.9s}
+.h-line.d4{animation-delay:1.3s}
+.h-line.d5{animation-delay:1.7s}
+.h-line.d6{animation-delay:2.1s}
+.h-line.d7{animation-delay:2.5s}
 
-.hero h1{font-size:clamp(2.8rem,6.5vw,5.2rem);font-weight:900;line-height:1.06;letter-spacing:-2.5px;margin-bottom:24px;
-  animation:fadeUp .7s .35s both}
-.hero h1 .grad{background:linear-gradient(135deg,var(--lime),#7fff00,var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
-.hero-sub{font-size:1.15rem;color:var(--text2);max-width:520px;line-height:1.75;margin-bottom:40px;
-  animation:fadeUp .7s .5s both}
+.hp{color:var(--lime);font-weight:700;font-size:.82rem;flex-shrink:0}
+.hc{color:var(--text);font-size:.82rem}
+.ho{font-size:.82rem;color:var(--text2);padding-left:22px;width:100%}
+.hg{color:var(--text3)}
 
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .7s .65s both}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 30px;border-radius:50px;font-family:inherit;font-size:.88rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all .3s}
+.hero-name{
+  font-size:clamp(1.6rem,4.5vw,2.8rem);
+  font-weight:800;color:var(--lime);
+  letter-spacing:-1px;line-height:1.1;
+  padding-left:22px;margin-bottom:5px;
+}
+.hero-role{color:var(--text2);font-size:.82rem;padding-left:22px;margin-bottom:3px}
+.hero-loc{color:var(--text3);font-size:.75rem;padding-left:22px}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:20px;
+  padding:7px 14px;
+  background:var(--lime-dim);
+  border:1px solid rgba(184,255,0,.14);
+  border-radius:var(--r);
+  font-size:.72rem;color:var(--lime);
+}
+.pulse{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--lime);flex-shrink:0;
+  animation:blink 1.5s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.hero-metrics{
+  display:flex;gap:40px;flex-wrap:wrap;
+  margin-top:40px;padding-top:28px;
+  border-top:1px solid var(--border);
+  opacity:0;animation:fadeUp .4s 3s forwards;
+}
+.hm-val{font-size:2rem;font-weight:800;color:var(--lime);letter-spacing:-1px}
+.hm-label{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+.hero-actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin-top:24px;
+  opacity:0;animation:fadeUp .4s 3.3s forwards;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 20px;border-radius:var(--r);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;font-weight:600;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:all .2s;letter-spacing:.3px;
+}
 .btn-primary{background:var(--lime);color:var(--bg)}
-.btn-primary:hover{box-shadow:0 0 32px var(--lime-glow);transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-primary::before{content:'$ ';opacity:.5;font-weight:400}
+.btn-primary:hover{box-shadow:0 0 28px var(--lime-glow);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-ghost::before{content:'> ';color:var(--text3);font-weight:400}
 .btn-ghost:hover{border-color:var(--lime);color:var(--lime)}
-.btn svg{width:18px;height:18px}
-
-.hero-metrics{display:flex;gap:56px;margin-top:80px;padding-top:40px;border-top:1px solid var(--border);
-  animation:fadeUp .7s .8s both}
-.metric-val{font-size:2.6rem;font-weight:900;color:var(--lime);letter-spacing:-1px}
-.metric-label{font-size:.78rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-
-/* ═══ SECTION HEADERS ═══ */
-.stag{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--lime);margin-bottom:10px}
-.stitle{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:14px}
-.sdesc{color:var(--text3);max-width:480px;margin-bottom:52px}
 
 /* ═══ ABOUT ═══ */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
-.about-avatar-wrap{position:relative;width:100%;max-width:360px}
-.about-avatar{width:100%;aspect-ratio:1;border-radius:24px;overflow:hidden;background:var(--surface2);
-  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative}
-.about-avatar .initials{font-size:5rem;font-weight:900;color:var(--lime);opacity:.15;letter-spacing:-4px}
-.about-avatar::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--bg) 100%)}
-.avatar-badge{position:absolute;bottom:-14px;left:24px;padding:10px 20px;background:var(--surface);border:1px solid var(--border);
-  border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--lime);z-index:2;
-  box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.about-text p{color:var(--text2);margin-bottom:18px;font-size:1.02rem}
-.about-text p strong{color:var(--text);font-weight:600}
-.about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
-.about-tags span{padding:6px 16px;border-radius:50px;background:var(--surface2);border:1px solid var(--border);
-  font-size:.82rem;color:var(--text2);font-weight:500;transition:all .3s}
-.about-tags span:hover{border-color:var(--lime);color:var(--lime);background:var(--lime-dim)}
+.about-grid{display:grid;grid-template-columns:180px 1fr;gap:40px;align-items:start}
+.about-photo{width:180px;height:180px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.about-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.about-photo-label{font-size:.63rem;color:var(--text3);text-align:center;margin-top:10px}
+.ap{color:var(--text2);margin-bottom:12px;font-size:.85rem;line-height:1.75}
+.ap strong{color:var(--text);font-weight:600}
+.flags{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}
+.flag{
+  padding:3px 11px;border-radius:var(--r);
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:.68rem;color:var(--lime);font-weight:500;
+  transition:all .2s;cursor:default;
+}
+.flag::before{content:'--';color:var(--text3)}
+.flag:hover{border-color:rgba(184,255,0,.2);background:var(--lime-dim)}
 
 /* ═══ EXPERIENCE ═══ */
-.timeline{position:relative;padding-left:36px}
-.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--lime),var(--surface3))}
-.tl-item{position:relative;margin-bottom:48px}
-.tl-item:last-child{margin-bottom:0}
-.tl-dot{position:absolute;left:-36px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--lime);z-index:2}
-.tl-item:not(:first-child) .tl-dot{border-color:var(--surface3)}
-.tl-header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-.tl-role{font-size:1.15rem;font-weight:700}
-.tl-company{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--lime);font-weight:500}
-.tl-meta{font-size:.82rem;color:var(--text3);margin-bottom:10px}
-.tl-desc{color:var(--text2);font-size:.95rem;max-width:560px}
-.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.tl-tags span{padding:4px 12px;border-radius:50px;background:var(--lime-dim);font-size:.75rem;color:var(--lime);font-weight:500}
+.exp-list{display:flex;flex-direction:column}
+.exp-item{
+  display:grid;grid-template-columns:148px 1fr;
+  padding:20px 0;border-bottom:1px solid var(--border);
+}
+.exp-item:last-child{border-bottom:none}
+.exp-date{font-size:.68rem;color:var(--text3);padding-right:20px;padding-top:3px;line-height:1.7}
+.exp-badge{
+  display:inline-block;padding:1px 7px;
+  background:var(--lime-dim);border:1px solid rgba(184,255,0,.15);
+  color:var(--lime);border-radius:2px;font-size:.6rem;margin-top:5px;
+}
+.exp-role{font-weight:700;font-size:.88rem;color:var(--text);margin-bottom:2px}
+.exp-company{font-size:.75rem;color:var(--cyan);margin-bottom:8px}
+.exp-desc{font-size:.8rem;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.exp-tags{display:flex;flex-wrap:wrap;gap:5px}
+.exp-tag{
+  padding:2px 9px;border-radius:2px;
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:.65rem;color:var(--text3);
+}
 
 /* ═══ SKILLS ═══ */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-.skill-card{padding:28px 24px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);
-  transition:all .35s;cursor:default;position:relative;overflow:hidden}
-.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .35s}
-.skill-card:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
-.skill-card:hover::before{transform:scaleX(1)}
-.skill-icon{font-size:2rem;margin-bottom:14px;display:block}
-.skill-name{font-weight:700;font-size:1rem;margin-bottom:4px}
-.skill-level{font-size:.78rem;color:var(--text3)}
-.skill-bar{margin-top:12px;height:3px;background:var(--surface3);border-radius:2px;overflow:hidden}
-.skill-bar-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));border-radius:2px}
+.skills-list{display:flex;flex-direction:column;gap:8px}
+.skill-row{
+  display:grid;grid-template-columns:160px 1fr 100px;
+  align-items:center;gap:16px;
+  padding:12px 16px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);transition:all .2s;
+}
+.skill-row:hover{border-color:rgba(184,255,0,.15);background:var(--surface2)}
+.skill-name-t{font-size:.8rem;font-weight:600;color:var(--text)}
+.skill-name-t::before{content:'├── ';color:var(--text3);font-weight:400}
+.skill-row:last-child .skill-name-t::before{content:'└── ';color:var(--text3);font-weight:400}
+.skill-bar-w{height:2px;background:var(--surface3);border-radius:1px;overflow:hidden}
+.skill-bar-f{height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));border-radius:1px}
+.skill-lvl{font-size:.63rem;color:var(--text3);text-align:right;white-space:nowrap}
 
 /* ═══ EDUCATION ═══ */
-.edu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-.edu-card{padding:32px 28px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);transition:all .3s}
-.edu-card:hover{border-color:rgba(184,255,0,.15);transform:translateY(-3px)}
-.edu-degree{font-weight:700;font-size:1.05rem;margin-bottom:4px}
-.edu-school{color:var(--lime);font-size:.9rem;font-weight:500;margin-bottom:8px}
-.edu-year{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text3)}
+.edu-list{display:flex;flex-direction:column}
+.edu-item{
+  display:grid;grid-template-columns:120px 1fr;
+  padding:16px 0;border-bottom:1px solid var(--border);
+}
+.edu-item:last-child{border-bottom:none}
+.edu-year{font-size:.68rem;color:var(--text3);padding-top:3px;padding-right:20px}
+.edu-degree{font-weight:600;font-size:.85rem;color:var(--text);margin-bottom:3px}
+.edu-school{font-size:.75rem;color:var(--cyan)}
 
-/* ═══ CERTIFICATIONS ═══ */
-.cert-list{display:grid;gap:12px}
-.cert-item{display:flex;align-items:center;gap:20px;padding:20px 24px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);transition:all .3s}
-.cert-item:hover{border-color:rgba(184,255,0,.12);background:var(--surface2)}
-.cert-icon{width:44px;height:44px;border-radius:12px;background:var(--lime-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cert-icon svg{width:22px;height:22px;stroke:var(--lime);fill:none}
-.cert-name{font-weight:600;font-size:.95rem}
-.cert-issuer{font-size:.82rem;color:var(--text3)}
+.cert-list{display:flex;flex-direction:column;gap:6px;margin-top:28px}
+.cert-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);font-size:.78rem;transition:all .2s;
+}
+.cert-row:hover{border-color:rgba(184,255,0,.12)}
+.cert-ok{color:var(--lime);flex-shrink:0;font-size:.72rem}
+.cert-n{color:var(--text);font-weight:500;flex:1}
+.cert-src{color:var(--text3);white-space:nowrap;font-size:.68rem}
 
 /* ═══ CONTACT ═══ */
-.contact-wrap{text-align:center;max-width:640px;margin:0 auto}
-.contact-wrap .stag,.contact-wrap .stitle,.contact-wrap .sdesc{text-align:center;margin-left:auto;margin-right:auto}
-.contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:40px}
-.contact-card{display:flex;align-items:center;gap:14px;padding:18px 28px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);text-decoration:none;color:var(--text);transition:all .3s}
-.contact-card:hover{border-color:var(--lime);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
-.contact-card svg{width:22px;height:22px;fill:var(--lime)}
-.contact-card .mail-svg{fill:none;stroke:var(--lime);stroke-width:2}
-.contact-card span{font-weight:600;font-size:.9rem}
+.contact-desc{font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:28px;max-width:480px}
+.contact-links{display:flex;flex-direction:column;gap:7px}
+.clink{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);
+  text-decoration:none;color:var(--text);
+  font-size:.8rem;transition:all .2s;
+}
+.clink::before{content:'→ ';color:var(--lime);font-weight:700;flex-shrink:0}
+.clink:hover{border-color:var(--lime);color:var(--lime)}
+.clink svg{width:15px;height:15px;fill:var(--text3);flex-shrink:0;transition:all .2s}
+.clink:hover svg{fill:var(--lime)}
+.clink-mail svg{fill:none;stroke:var(--text3);stroke-width:2;transition:stroke .2s}
+.clink:hover .clink-mail svg{stroke:var(--lime)}
 
 /* ═══ FOOTER ═══ */
-footer{position:relative;z-index:1;text-align:center;padding:48px 32px;border-top:1px solid var(--border)}
-footer p{font-size:.82rem;color:var(--text3)}
-footer .heart{color:var(--lime)}
+footer{
+  padding:28px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+  font-size:.7rem;color:var(--text3);
+}
+.ft-p{color:var(--lime);font-weight:700}
+.ft-heart{color:var(--lime)}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:768px){
-  nav{padding:0 20px;background:var(--bg);backdrop-filter:none}
-  .nav-links{position:fixed;top:72px;left:0;right:0;bottom:0;background:var(--bg);
-    flex-direction:column;align-items:center;justify-content:center;gap:40px;
-    transform:translateX(100%);transition:transform .35s ease}
-  #menu-toggle:checked ~ .nav-links{transform:translateX(0)}
-  #menu-toggle:checked ~ .hamburger span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-  #menu-toggle:checked ~ .hamburger span:nth-child(2){opacity:0}
-  #menu-toggle:checked ~ .hamburger span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+  .nav-path{display:none}
   .nav-cta{display:none}
-  .hamburger{display:flex}
-  main{padding:0 20px}
-  section{padding:72px 0}
-  .hero{padding-top:72px;min-height:auto;padding-bottom:40px}
-  .hero h1{letter-spacing:-1.5px}
-  .hero-metrics{flex-wrap:wrap;gap:32px}
-  .about-grid{grid-template-columns:1fr;gap:36px}
-  .about-avatar-wrap{max-width:240px;margin:0 auto}
-  .skills-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-  .skill-card{padding:20px 16px}
-  .edu-grid{grid-template-columns:1fr}
-  .contact-links{flex-direction:column;align-items:center}
+  .nav-tabbar a{padding:9px 13px;font-size:.68rem}
+  main{padding:0 16px;padding-top:78px}
+  section{padding:60px 0}
+  .term-body{padding:22px 18px 28px}
+  .hero-metrics{gap:24px}
+  .about-grid{grid-template-columns:1fr}
+  .about-photo{width:130px;height:130px}
+  .exp-item{grid-template-columns:1fr}
+  .exp-date{padding-bottom:6px}
+  .edu-item{grid-template-columns:1fr}
+  .edu-year{padding-bottom:4px}
+  .skill-row{grid-template-columns:1fr 1fr}
+  .skill-lvl{display:none}
 }
 @media(max-width:480px){
-  .hero h1{font-size:2.2rem}
-  .hero-metrics{gap:24px}
-  .metric-val{font-size:2rem}
-  .skills-grid{grid-template-columns:1fr 1fr}
+  .hero-name{font-size:1.5rem}
+  .nav-tabbar a span{display:none}
+  .skill-row{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<div class="ambient">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
-<div class="grid-pattern"></div>
-
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">FAS<span>.</span></div>
-  <input type="checkbox" id="menu-toggle">
-  <label for="menu-toggle" class="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </label>
-  <ul class="nav-links">
-    <li><a href="#sobre">Sobre</a></li>
-    <li><a href="#experiencia">Experiência</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#formacao">Formação</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ul>
-  <a href="#contato" class="nav-cta">Fale comigo</a>
+  <div class="nav-titlebar">
+    <div class="nav-dots">
+      <div class="nd nd-r"></div>
+      <div class="nd nd-y"></div>
+      <div class="nd nd-g"></div>
+    </div>
+    <div class="nav-path">~/flavio-alves-da-silva — portfolio — bash</div>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lt-btn active" data-lang="pt">PT</button>
+        <span class="lt-sep">|</span>
+        <button class="lt-btn" data-lang="en">EN</button>
+      </div>
+      <a href="#contato" class="nav-cta" data-i18n="nav.cta">contato</a>
+    </div>
+  </div>
+  <div class="nav-tabbar">
+    <a href="#inicio"><span class="tab-sym">~</span><span data-i18n="nav.home"> início</span></a>
+    <a href="#sobre"><span class="tab-sym">&gt;</span><span data-i18n="nav.about"> sobre</span></a>
+    <a href="#experiencia"><span class="tab-sym">&gt;</span><span data-i18n="nav.experience"> experiência</span></a>
+    <a href="#skills"><span class="tab-sym">&gt;</span><span data-i18n="nav.skills"> skills</span></a>
+    <a href="#formacao"><span class="tab-sym">&gt;</span><span data-i18n="nav.education"> formação</span></a>
+    <a href="#contato"><span class="tab-sym">&gt;</span><span data-i18n="nav.contact"> contato</span></a>
+  </div>
 </nav>
 
 <main>
 
 <!-- HERO -->
 <section class="hero" id="inicio">
-  <div class="hero-badge">
-    <div class="pulse"></div>
-    <span>Disponível para novos desafios</span>
-  </div>
-  <h1>Flavio Alves<br>da <span class="grad">Silva</span></h1>
-  <p class="hero-sub">Especialista em Desenvolvimento de Sistemas com <strong style="color:var(--text)">+10 anos</strong> de experiência na área de tecnologia, construindo soluções em React Native, PHP e Inteligência Artificial. Baseado em São José do Rio Preto, SP.</p>
-  <div class="hero-actions">
-    <a href="#contato" class="btn btn-primary">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Entre em contato
-    </a>
-    <a href="#experiencia" class="btn btn-ghost">
-      Ver experiência
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-    </a>
-  </div>
-  <div class="hero-metrics">
-    <div>
-      <div class="metric-val">10+</div>
-      <div class="metric-label">Anos em tecnologia</div>
+  <div class="term-window">
+    <div class="term-bar">
+      <div class="tb-dot tb-r"></div>
+      <div class="tb-dot tb-y"></div>
+      <div class="tb-dot tb-g"></div>
+      <div class="tb-title">~/portfolio — bash — 80×24</div>
     </div>
-    <div>
-      <div class="metric-val">418</div>
-      <div class="metric-label">Conexões profissionais</div>
-    </div>
-    <div>
-      <div class="metric-val">6+</div>
-      <div class="metric-label">Certificações</div>
+    <div class="term-body">
+
+      <div class="h-line d1">
+        <span class="hp">flavio@dev:~$</span>
+        <span class="hc">cat profile.json</span>
+      </div>
+      <div class="h-line d2">
+        <div class="ho"><span class="hg">{</span></div>
+      </div>
+      <div class="h-line d3">
+        <div>
+          <div class="hero-name">Flavio Alves da Silva</div>
+          <div class="hero-role" data-i18n="hero.role">Software Engineer Specialist · AI Agents · React Native · PHP/Laravel</div>
+          <div class="hero-loc" data-i18n="hero.loc">📍 São José do Rio Preto, SP — Brasil</div>
+        </div>
+      </div>
+      <div class="h-line d4">
+        <div class="ho"><span class="hg">}</span></div>
+      </div>
+      <div class="h-line d5" style="height:10px"></div>
+      <div class="h-line d6">
+        <span class="hp">flavio@dev:~$</span>
+        <span class="hc">./status.sh</span>
+      </div>
+      <div class="h-line d7">
+        <div class="hero-badge">
+          <div class="pulse"></div>
+          <span data-i18n="hero.status">disponível para novos desafios</span>
+        </div>
+      </div>
+
+      <div class="hero-metrics">
+        <div>
+          <div class="hm-val">10+</div>
+          <div class="hm-label" data-i18n="hero.metric1">anos em tecnologia</div>
+        </div>
+        <div>
+          <div class="hm-val">418</div>
+          <div class="hm-label" data-i18n="hero.metric2">conexões LinkedIn</div>
+        </div>
+        <div>
+          <div class="hm-val">6+</div>
+          <div class="hm-label" data-i18n="hero.metric3">certificações</div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#contato" class="btn btn-primary" data-i18n="hero.btn1">contato</a>
+        <a href="#experiencia" class="btn btn-ghost" data-i18n="hero.btn2">ver experiência</a>
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- SOBRE -->
 <section id="sobre">
-  <div class="about-grid">
-    <div class="about-avatar-wrap">
-      <div class="about-avatar">
-        <img src="about-avatar.jpg" alt="Flavio Alves da Silva" style="width:100%;height:100%;object-fit:cover;display:block;">
+  <div class="sec-cmd">
+    <span class="sc-user">flavio@dev</span><span class="sc-sep">:</span><span class="sc-host">~/portfolio</span><span class="sc-sym">$</span>
+    <span class="sc-text" data-i18n="about.cmd">cat sobre.txt</span>
+  </div>
+  <div class="sec-line"></div>
+  <div class="sec-output">
+    <div class="about-grid">
+      <div>
+        <div class="about-photo">
+          <img src="about-avatar.jpg" alt="Flavio Alves da Silva">
+        </div>
+        <div class="about-photo-label"># flavio-alves-da-silva</div>
       </div>
-      <div class="avatar-badge">📍 São José do Rio Preto, SP</div>
-    </div>
-    <div class="about-text">
-      <div class="stag">// Sobre mim</div>
-      <div class="stitle">Transformando ideias<br>em código</div>
-      <p>Sou <strong>Especialista em Desenvolvimento de Sistemas</strong> na <strong>MoveEdu</strong>, com mais de <strong>10 anos de experiência na área de tecnologia</strong>. Iniciei minha jornada na empresa em 2018 e cresci do cargo de Assistente até Especialista. Minha trajetória combina experiência em <strong>desenvolvimento mobile</strong> com React Native, <strong>back-end</strong> com PHP e uma crescente paixão por <strong>Inteligência Artificial</strong>.</p>
-      <p>Antes de migrar para a tecnologia, atuei na <strong>Prefeitura de Suzano</strong> por mais de 7 anos, chegando ao cargo de Chefe de Departamento — uma experiência que me deu visão de gestão, liderança e processos.</p>
-      <p>Formado em <strong>Sistemas de Informação</strong> pela UMC e pós-graduado em <strong>Gestão e Planejamento em T.I.</strong> pela Fatec, busco constantemente evoluir — atualmente mergulhando no universo de AI Engineering.</p>
-      <div class="about-tags">
-        <span>React Native</span>
-        <span>PHP</span>
-        <span>AI / IA</span>
-        <span>HTML</span>
-        <span>Mobile</span>
-        <span>Gestão de Projetos</span>
-        <span>Expo</span>
-        <span>AsyncStorage</span>
+      <div>
+        <p class="ap" data-i18n-html="about.p1"></p>
+        <p class="ap" data-i18n-html="about.p2"></p>
+        <p class="ap" data-i18n-html="about.p3"></p>
+        <div class="flags">
+          <span class="flag">react-native</span>
+          <span class="flag">php-laravel</span>
+          <span class="flag">langchain</span>
+          <span class="flag">rag-qdrant</span>
+          <span class="flag">redis</span>
+          <span class="flag">docker</span>
+          <span class="flag">ai-agents</span>
+          <span class="flag">whatsapp-api</span>
+        </div>
       </div>
     </div>
   </div>
@@ -305,206 +519,229 @@ footer .heart{color:var(--lime)}
 
 <!-- EXPERIENCIA -->
 <section id="experiencia">
-  <div class="stag">// Trajetória</div>
-  <div class="stitle">Experiência Profissional</div>
-  <div class="sdesc">+10 anos na área de tecnologia, desde administração pública até desenvolvimento de sistemas.</div>
+  <div class="sec-cmd">
+    <span class="sc-user">flavio@dev</span><span class="sc-sep">:</span><span class="sc-host">~/portfolio</span><span class="sc-sym">$</span>
+    <span class="sc-text">git log --author="Flavio" --reverse</span>
+  </div>
+  <div class="sec-line"></div>
+  <div class="sec-output">
+    <div class="exp-list">
 
-  <div class="timeline">
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-header">
-        <span class="tl-role">Especialista em Desenvolvimento de Sistemas</span>
-        <span class="tl-company">MoveEdu</span>
+      <div class="exp-item">
+        <div class="exp-date">
+          <span data-i18n="exp.date1">mar/2022 — hoje</span><br>
+          <span class="exp-badge" data-i18n="exp.badge">atual</span>
+        </div>
+        <div>
+          <div class="exp-role" data-i18n="exp.role1">Especialista em Desenvolvimento de Sistemas</div>
+          <div class="exp-company" data-i18n="exp.company1">@ MoveEdu · Híbrido</div>
+          <div class="exp-desc" data-i18n="exp.desc1">Liderança no desenvolvimento de sistemas internos, aplicações mobile e integração de Agentes de IA em fluxos de negócio com foco em performance e escalabilidade.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">React Native</span><span class="exp-tag">PHP</span><span class="exp-tag">LangChain</span><span class="exp-tag">AI Agents</span><span class="exp-tag">Expo</span>
+          </div>
+        </div>
       </div>
-      <div class="tl-meta">Mar 2022 — Presente · +4 anos · Híbrido</div>
-      <div class="tl-desc">Atuação como especialista no desenvolvimento e evolução de sistemas internos, aplicações mobile e integrações com foco em performance e escalabilidade.</div>
-      <div class="tl-tags"><span>React Native</span><span>PHP</span><span>AI</span><span>Expo</span></div>
-    </div>
 
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-header">
-        <span class="tl-role">Analista de Sistemas</span>
-        <span class="tl-company">MoveEdu</span>
+      <div class="exp-item">
+        <div class="exp-date">jun/2019 — mar/2022</div>
+        <div>
+          <div class="exp-role" data-i18n="exp.role2">Analista de Sistemas</div>
+          <div class="exp-company">@ MoveEdu</div>
+          <div class="exp-desc" data-i18n="exp.desc2">Análise, desenvolvimento e manutenção de sistemas web e mobile, definição de arquiteturas e melhorias de processos.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">PHP</span><span class="exp-tag">React Native</span><span class="exp-tag">HTML</span>
+          </div>
+        </div>
       </div>
-      <div class="tl-meta">Jun 2019 — Mar 2022 · 2 anos 10 meses</div>
-      <div class="tl-desc">Análise, desenvolvimento e manutenção de sistemas web e mobile, participando ativamente na definição de arquiteturas e melhorias de processos.</div>
-      <div class="tl-tags"><span>PHP</span><span>React Native</span><span>HTML</span></div>
-    </div>
 
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-header">
-        <span class="tl-role">Assistente de Desenvolvimento Web</span>
-        <span class="tl-company">MoveEdu</span>
+      <div class="exp-item">
+        <div class="exp-date">fev/2018 — jun/2019</div>
+        <div>
+          <div class="exp-role" data-i18n="exp.role3">Assistente de Desenvolvimento Web</div>
+          <div class="exp-company">@ MoveEdu</div>
+          <div class="exp-desc" data-i18n="exp.desc3">Início da jornada na MoveEdu, desenvolvimento e manutenção de aplicações web.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">HTML</span><span class="exp-tag">PHP</span><span class="exp-tag">Web</span>
+          </div>
+        </div>
       </div>
-      <div class="tl-meta">Fev 2018 — Jun 2019 · 1 ano 5 meses</div>
-      <div class="tl-desc">Início da jornada na MoveEdu, atuando no desenvolvimento e manutenção de aplicações web da empresa.</div>
-      <div class="tl-tags"><span>HTML</span><span>PHP</span><span>Web</span></div>
-    </div>
 
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-header">
-        <span class="tl-role">Auxiliar de Infraestrutura</span>
-        <span class="tl-company">RadioNet Telecom</span>
+      <div class="exp-item">
+        <div class="exp-date">mar/2017 — fev/2018</div>
+        <div>
+          <div class="exp-role" data-i18n="exp.role4">Auxiliar de Infraestrutura</div>
+          <div class="exp-company">@ RadioNet Telecom</div>
+          <div class="exp-desc" data-i18n="exp.desc4">Suporte e manutenção de infraestrutura de redes e telecomunicações.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">Infra</span><span class="exp-tag">Redes</span><span class="exp-tag">Telecom</span>
+          </div>
+        </div>
       </div>
-      <div class="tl-meta">Mar 2017 — Fev 2018 · 1 ano</div>
-      <div class="tl-desc">Suporte e manutenção de infraestrutura de redes e telecomunicações.</div>
-      <div class="tl-tags"><span>Infraestrutura</span><span>Redes</span><span>Telecom</span></div>
-    </div>
 
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-header">
-        <span class="tl-role">Chefe de Departamento</span>
-        <span class="tl-company">Prefeitura de Suzano</span>
+      <div class="exp-item">
+        <div class="exp-date">nov/2013 — dez/2016</div>
+        <div>
+          <div class="exp-role" data-i18n="exp.role5">Chefe de Departamento</div>
+          <div class="exp-company">@ Prefeitura de Suzano</div>
+          <div class="exp-desc" data-i18n="exp.desc5">Liderança de equipe e gestão de processos administrativos no setor público, coordenando atividades e garantindo eficiência operacional.</div>
+          <div class="exp-tags">
+            <span class="exp-tag" data-i18n="tag.management">Gestão</span><span class="exp-tag" data-i18n="tag.leadership">Liderança</span>
+          </div>
+        </div>
       </div>
-      <div class="tl-meta">Nov 2013 — Dez 2016 · 3 anos 2 meses</div>
-      <div class="tl-desc">Liderança de equipe e gestão de processos administrativos no setor público, coordenando atividades e garantindo eficiência operacional.</div>
-      <div class="tl-tags"><span>Gestão</span><span>Liderança</span><span>Administração</span></div>
-    </div>
 
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-header">
-        <span class="tl-role">Auxiliar Administrativo</span>
-        <span class="tl-company">Prefeitura de Suzano</span>
+      <div class="exp-item">
+        <div class="exp-date">set/2009 — nov/2013</div>
+        <div>
+          <div class="exp-role" data-i18n="exp.role6">Auxiliar Administrativo</div>
+          <div class="exp-company">@ Prefeitura de Suzano</div>
+          <div class="exp-desc" data-i18n="exp.desc6">Suporte administrativo e processual no setor público municipal.</div>
+          <div class="exp-tags">
+            <span class="exp-tag" data-i18n="tag.admin">Administração</span>
+          </div>
+        </div>
       </div>
-      <div class="tl-meta">Set 2009 — Nov 2013 · 4 anos 3 meses</div>
-      <div class="tl-desc">Suporte administrativo e processual no setor público municipal.</div>
-      <div class="tl-tags"><span>Administração</span><span>Processos</span></div>
+
     </div>
   </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="stag">// Competências</div>
-  <div class="stitle">Skills &amp; Tecnologias</div>
-  <div class="sdesc">Ferramentas e tecnologias que domino no dia a dia.</div>
-
-  <div class="skills-grid">
-    <div class="skill-card">
-      <span class="skill-icon">⚛️</span>
-      <div class="skill-name">React Native</div>
-      <div class="skill-level">Avançado · Expo, AsyncStorage</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">🐘</span>
-      <div class="skill-name">PHP</div>
-      <div class="skill-level">Avançado · Certificado LinkedIn</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:92%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">🤖</span>
-      <div class="skill-name">AI / IA</div>
-      <div class="skill-level">Intermediário · AI Engineering</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:65%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">🌐</span>
-      <div class="skill-name">HTML / CSS</div>
-      <div class="skill-level">Avançado · Certificado LinkedIn</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">📱</span>
-      <div class="skill-name">Mobile Dev</div>
-      <div class="skill-level">Avançado · iOS &amp; Android</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">📊</span>
-      <div class="skill-name">Gestão de Projetos</div>
-      <div class="skill-level">Intermediário · Planejamento TI</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">🗄️</span>
-      <div class="skill-name">Banco de Dados</div>
-      <div class="skill-level">Intermediário</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:72%"></div></div>
-    </div>
-    <div class="skill-card">
-      <span class="skill-icon">🇬🇧</span>
-      <div class="skill-name">Inglês</div>
-      <div class="skill-level">Intermediário</div>
-      <div class="skill-bar"><div class="skill-bar-fill" style="width:55%"></div></div>
+  <div class="sec-cmd">
+    <span class="sc-user">flavio@dev</span><span class="sc-sep">:</span><span class="sc-host">~/portfolio</span><span class="sc-sym">$</span>
+    <span class="sc-text">ls --skills --verbose</span>
+  </div>
+  <div class="sec-line"></div>
+  <div class="sec-output">
+    <div class="skills-list">
+      <div class="skill-row">
+        <div class="skill-name-t">React Native</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:90%"></div></div>
+        <div class="skill-lvl"><span data-i18n="skill.advanced">Avançado</span> · Expo</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">PHP / Laravel</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:92%"></div></div>
+        <div class="skill-lvl"><span data-i18n="skill.advanced">Avançado</span> · Cert.</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">HTML / CSS</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:95%"></div></div>
+        <div class="skill-lvl"><span data-i18n="skill.advanced">Avançado</span> · Cert.</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">LangChain</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:70%"></div></div>
+        <div class="skill-lvl" data-i18n="skill.intermediate">Intermediário</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">RAG / Qdrant</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:65%"></div></div>
+        <div class="skill-lvl" data-i18n="skill.intermediate">Intermediário</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">Redis</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:70%"></div></div>
+        <div class="skill-lvl" data-i18n="skill.intermediate">Intermediário</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">Docker</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:68%"></div></div>
+        <div class="skill-lvl" data-i18n="skill.intermediate">Intermediário</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name-t">Mobile Dev</div>
+        <div class="skill-bar-w"><div class="skill-bar-f" style="width:88%"></div></div>
+        <div class="skill-lvl">iOS &amp; Android</div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FORMAÇÃO -->
 <section id="formacao">
-  <div class="stag">// Formação</div>
-  <div class="stitle">Educação &amp; Certificações</div>
-  <div class="sdesc">Base acadêmica sólida e aprendizado contínuo.</div>
-
-  <div class="edu-grid">
-    <div class="edu-card">
-      <div class="edu-degree">Bacharelado em Sistemas de Informação</div>
-      <div class="edu-school">Universidade de Mogi das Cruzes</div>
-      <div class="edu-year">2010 — 2013</div>
-    </div>
-    <div class="edu-card">
-      <div class="edu-degree">Pós-Graduação — Gestão e Planejamento em T.I.</div>
-      <div class="edu-school">Fatec Rio Preto</div>
-      <div class="edu-year">2017 — 2018</div>
-    </div>
+  <div class="sec-cmd">
+    <span class="sc-user">flavio@dev</span><span class="sc-sep">:</span><span class="sc-host">~/portfolio</span><span class="sc-sym">$</span>
+    <span class="sc-text" data-i18n="edu.cmd">cat education.txt &amp;&amp; ls ./certificates/</span>
   </div>
+  <div class="sec-line"></div>
+  <div class="sec-output">
 
-  <div style="margin-top:48px">
-    <h3 style="font-weight:700;font-size:1.2rem;margin-bottom:20px">Certificações</h3>
-    <div class="cert-list">
-      <div class="cert-item">
-        <div class="cert-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div><div class="cert-name">React Native com Expo: navegação com menu e suporte às telas</div><div class="cert-issuer">Alura · Ago 2022</div></div>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div class="edu-year">2010 — 2013</div>
+        <div>
+          <div class="edu-degree" data-i18n="edu.degree1">Bacharelado em Sistemas de Informação</div>
+          <div class="edu-school">Universidade de Mogi das Cruzes</div>
+        </div>
       </div>
-      <div class="cert-item">
-        <div class="cert-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div><div class="cert-name">React Native: AsyncStorage e Navegação</div><div class="cert-issuer">Alura · Abr 2021</div></div>
-      </div>
-      <div class="cert-item">
-        <div class="cert-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div><div class="cert-name">PHP — Avaliação de Competências</div><div class="cert-issuer">LinkedIn Skill Assessment</div></div>
-      </div>
-      <div class="cert-item">
-        <div class="cert-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div><div class="cert-name">HTML — Avaliação de Competências</div><div class="cert-issuer">LinkedIn Skill Assessment</div></div>
-      </div>
-      <div class="cert-item">
-        <div class="cert-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div><div class="cert-name">Conceitos de Gestão de Projetos</div><div class="cert-issuer">Curso complementar</div></div>
-      </div>
-      <div class="cert-item">
-        <div class="cert-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div><div class="cert-name">+ 4 certificações adicionais</div><div class="cert-issuer">Alura &amp; outros</div></div>
+      <div class="edu-item">
+        <div class="edu-year">2017 — 2018</div>
+        <div>
+          <div class="edu-degree" data-i18n="edu.degree2">Pós-Graduação — Gestão e Planejamento em T.I.</div>
+          <div class="edu-school">Fatec Rio Preto</div>
+        </div>
       </div>
     </div>
+
+    <div class="cert-list">
+      <div class="cert-row">
+        <span class="cert-ok">[✓]</span>
+        <span class="cert-n" data-i18n="cert.1">React Native com Expo: navegação com menu e suporte às telas</span>
+        <span class="cert-src">Alura · 2022</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-ok">[✓]</span>
+        <span class="cert-n" data-i18n="cert.2">React Native: AsyncStorage e Navegação</span>
+        <span class="cert-src">Alura · 2021</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-ok">[✓]</span>
+        <span class="cert-n" data-i18n="cert.3">PHP — Avaliação de Competências</span>
+        <span class="cert-src">LinkedIn</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-ok">[✓]</span>
+        <span class="cert-n" data-i18n="cert.4">HTML — Avaliação de Competências</span>
+        <span class="cert-src">LinkedIn</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-ok">[✓]</span>
+        <span class="cert-n" data-i18n="cert.5">Conceitos de Gestão de Projetos</span>
+        <span class="cert-src" data-i18n="cert.src5">Curso</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-ok">[+]</span>
+        <span class="cert-n" data-i18n="cert.6">+ 4 certificações adicionais</span>
+        <span class="cert-src">Alura &amp; outros</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- CONTATO -->
 <section id="contato">
-  <div class="contact-wrap">
-    <div class="stag">// Contato</div>
-    <div class="stitle">Vamos conversar?</div>
-    <div class="sdesc" style="max-width:440px">Estou sempre aberto a trocar ideias sobre tecnologia, projetos e novas oportunidades.</div>
-
+  <div class="sec-cmd">
+    <span class="sc-user">flavio@dev</span><span class="sc-sep">:</span><span class="sc-host">~/portfolio</span><span class="sc-sym">$</span>
+    <span class="sc-text">./connect.sh --open</span>
+  </div>
+  <div class="sec-line"></div>
+  <div class="sec-output">
+    <p class="contact-desc" data-i18n="contact.desc">Estou sempre aberto a trocar ideias sobre tecnologia, projetos e novas oportunidades.</p>
     <div class="contact-links">
-      <a href="https://www.linkedin.com/in/flavio-alves-da-silva/" target="_blank" class="contact-card">
+      <a href="https://www.linkedin.com/in/flavio-alves-da-silva/" target="_blank" class="clink">
         <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        <span>LinkedIn</span>
+        linkedin.com/in/flavio-alves-da-silva
       </a>
-      <a href="mailto:flavio.sisinfo@gmail.com" class="contact-card">
-        <svg class="mail-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        <span>flavio.sisinfo@gmail.com</span>
+      <a href="mailto:flavio.sisinfo@gmail.com" class="clink clink-mail">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        flavio.sisinfo@gmail.com
       </a>
-      <a href="https://github.com/flavio-alves-dev" target="_blank" class="contact-card">
+      <a href="https://github.com/flavio-alves-dev" target="_blank" class="clink">
         <svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-        <span>GitHub</span>
+        github.com/flavio-alves-dev
       </a>
     </div>
   </div>
@@ -513,15 +750,204 @@ footer .heart{color:var(--lime)}
 </main>
 
 <footer>
-  <p>Desenvolvido com <span class="heart">♥</span> por Flavio Alves da Silva · 2026</p>
+  <span class="ft-p">flavio@dev:~$</span>
+  <span>exit 0 &nbsp;·&nbsp; <span data-i18n="footer.made">feito</span> com <span class="ft-heart">♥</span> · 2026</span>
 </footer>
 
 <script>
-  document.querySelectorAll('.nav-links a').forEach(function(link){
-    link.addEventListener('click',function(){
-      document.getElementById('menu-toggle').checked=false;
-    });
+const translations = {
+  pt: {
+    // Nav
+    'nav.home':       ' início',
+    'nav.about':      ' sobre',
+    'nav.experience': ' experiência',
+    'nav.skills':     ' skills',
+    'nav.education':  ' formação',
+    'nav.contact':    ' contato',
+    'nav.cta':        'contato',
+
+    // Hero
+    'hero.role':    'Software Engineer Specialist · AI Agents · React Native · PHP/Laravel',
+    'hero.loc':     '📍 São José do Rio Preto, SP — Brasil',
+    'hero.status':  'disponível para novos desafios',
+    'hero.metric1': 'anos em tecnologia',
+    'hero.metric2': 'conexões LinkedIn',
+    'hero.metric3': 'certificações',
+    'hero.btn1':    'contato',
+    'hero.btn2':    'ver experiência',
+
+    // About
+    'about.cmd': 'cat sobre.txt',
+    'about.p1':  'Sou <strong>Especialista em Desenvolvimento de Sistemas</strong> na <strong>MoveEdu</strong>, com mais de <strong>10 anos de experiência</strong> construindo soluções que vão além do código — arquiteturas escaláveis que combinam o ecossistema Full-Stack com o poder da <strong>Inteligência Artificial Generativa</strong>.',
+    'about.p2':  'Atualmente lidero a integração de <strong>Agentes de IA</strong> em produtos reais, conectando LLMs a fluxos de negócio através de orquestração inteligente com <strong>LangChain</strong>, recuperação semântica com <strong>RAG + Qdrant</strong> e canais como o <strong>WhatsApp Business</strong> via Meta Cloud API.',
+    'about.p3':  'Antes de migrar para a tecnologia, atuei na <strong>Prefeitura de Suzano</strong> por mais de 7 anos, chegando ao cargo de Chefe de Departamento. Formado em <strong>Sistemas de Informação</strong> pela UMC e pós-graduado em <strong>Gestão e Planejamento em T.I.</strong> pela Fatec.',
+
+    // Experience
+    'exp.date1':    'mar/2022 — hoje',
+    'exp.badge':    'atual',
+    'exp.role1':    'Especialista em Desenvolvimento de Sistemas',
+    'exp.company1': '@ MoveEdu · Híbrido',
+    'exp.desc1':    'Liderança no desenvolvimento de sistemas internos, aplicações mobile e integração de Agentes de IA em fluxos de negócio com foco em performance e escalabilidade.',
+    'exp.role2':    'Analista de Sistemas',
+    'exp.desc2':    'Análise, desenvolvimento e manutenção de sistemas web e mobile, definição de arquiteturas e melhorias de processos.',
+    'exp.role3':    'Assistente de Desenvolvimento Web',
+    'exp.desc3':    'Início da jornada na MoveEdu, desenvolvimento e manutenção de aplicações web.',
+    'exp.role4':    'Auxiliar de Infraestrutura',
+    'exp.desc4':    'Suporte e manutenção de infraestrutura de redes e telecomunicações.',
+    'exp.role5':    'Chefe de Departamento',
+    'exp.desc5':    'Liderança de equipe e gestão de processos administrativos no setor público, coordenando atividades e garantindo eficiência operacional.',
+    'exp.role6':    'Auxiliar Administrativo',
+    'exp.desc6':    'Suporte administrativo e processual no setor público municipal.',
+    'tag.management': 'Gestão',
+    'tag.leadership': 'Liderança',
+    'tag.admin':      'Administração',
+
+    // Skills
+    'skill.advanced':     'Avançado',
+    'skill.intermediate': 'Intermediário',
+
+    // Education
+    'edu.cmd':     'cat education.txt &amp;&amp; ls ./certificates/',
+    'edu.degree1': 'Bacharelado em Sistemas de Informação',
+    'edu.degree2': 'Pós-Graduação — Gestão e Planejamento em T.I.',
+    'cert.1':      'React Native com Expo: navegação com menu e suporte às telas',
+    'cert.2':      'React Native: AsyncStorage e Navegação',
+    'cert.3':      'PHP — Avaliação de Competências',
+    'cert.4':      'HTML — Avaliação de Competências',
+    'cert.5':      'Conceitos de Gestão de Projetos',
+    'cert.src5':   'Curso',
+    'cert.6':      '+ 4 certificações adicionais',
+
+    // Contact
+    'contact.desc': 'Estou sempre aberto a trocar ideias sobre tecnologia, projetos e novas oportunidades.',
+
+    // Footer
+    'footer.made': 'feito',
+  },
+
+  en: {
+    // Nav
+    'nav.home':       ' home',
+    'nav.about':      ' about',
+    'nav.experience': ' experience',
+    'nav.skills':     ' skills',
+    'nav.education':  ' education',
+    'nav.contact':    ' contact',
+    'nav.cta':        'contact',
+
+    // Hero
+    'hero.role':    'Software Engineer Specialist · AI Agents · React Native · PHP/Laravel',
+    'hero.loc':     '📍 São José do Rio Preto, SP — Brazil',
+    'hero.status':  'available for new challenges',
+    'hero.metric1': 'years in tech',
+    'hero.metric2': 'LinkedIn connections',
+    'hero.metric3': 'certifications',
+    'hero.btn1':    'contact',
+    'hero.btn2':    'view experience',
+
+    // About
+    'about.cmd': 'cat about.txt',
+    'about.p1':  'I am a <strong>Systems Development Specialist</strong> at <strong>MoveEdu</strong>, with over <strong>10 years of experience</strong> building solutions that go beyond code — scalable architectures that combine the Full-Stack ecosystem with the power of <strong>Generative Artificial Intelligence</strong>.',
+    'about.p2':  'I currently lead the integration of <strong>AI Agents</strong> into real products, connecting LLMs to business workflows through intelligent orchestration with <strong>LangChain</strong>, semantic retrieval with <strong>RAG + Qdrant</strong>, and channels like <strong>WhatsApp Business</strong> via Meta Cloud API.',
+    'about.p3':  'Before transitioning to tech, I worked at <strong>Prefeitura de Suzano</strong> for over 7 years, reaching the position of Department Head. I hold a degree in <strong>Information Systems</strong> from UMC and a postgraduate degree in <strong>IT Management and Planning</strong> from Fatec.',
+
+    // Experience
+    'exp.date1':    'Mar/2022 — present',
+    'exp.badge':    'current',
+    'exp.role1':    'Systems Development Specialist',
+    'exp.company1': '@ MoveEdu · Hybrid',
+    'exp.desc1':    'Led the development of internal systems, mobile apps and AI Agents integration into business workflows, focused on performance and scalability.',
+    'exp.role2':    'Systems Analyst',
+    'exp.desc2':    'Analysis, development and maintenance of web and mobile systems, architecture definition and process improvements.',
+    'exp.role3':    'Web Development Assistant',
+    'exp.desc3':    'Joined MoveEdu, working on the development and maintenance of web applications.',
+    'exp.role4':    'Infrastructure Assistant',
+    'exp.desc4':    'Support and maintenance of network and telecommunications infrastructure.',
+    'exp.role5':    'Department Head',
+    'exp.desc5':    'Team leadership and management of administrative processes in the public sector, coordinating activities and ensuring operational efficiency.',
+    'exp.role6':    'Administrative Assistant',
+    'exp.desc6':    'Administrative and procedural support in the municipal public sector.',
+    'tag.management': 'Management',
+    'tag.leadership': 'Leadership',
+    'tag.admin':      'Administration',
+
+    // Skills
+    'skill.advanced':     'Advanced',
+    'skill.intermediate': 'Intermediate',
+
+    // Education
+    'edu.cmd':     'cat education.txt &amp;&amp; ls ./certificates/',
+    'edu.degree1': "Bachelor's in Information Systems",
+    'edu.degree2': 'Postgraduate — IT Management and Planning',
+    'cert.1':      'React Native with Expo: navigation with menu and screen support',
+    'cert.2':      'React Native: AsyncStorage and Navigation',
+    'cert.3':      'PHP — Skills Assessment',
+    'cert.4':      'HTML — Skills Assessment',
+    'cert.5':      'Project Management Concepts',
+    'cert.src5':   'Course',
+    'cert.6':      '+ 4 additional certifications',
+
+    // Contact
+    'contact.desc': 'I am always open to exchanging ideas about technology, projects and new opportunities.',
+
+    // Footer
+    'footer.made': 'made',
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'pt';
+
+function applyLang(lang) {
+  const t = translations[lang];
+
+  // data-i18n (textContent)
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
   });
+
+  // data-i18n-html (innerHTML — for paragraphs with <strong>)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // Toggle buttons
+  document.querySelectorAll('.lt-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // html lang attribute
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+}
+
+// Language toggle click
+document.querySelectorAll('.lt-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-tabbar a');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + entry.target.id) a.classList.add('active');
+      });
+    }
+  });
+}, {threshold: 0.3});
+
+sections.forEach(s => observer.observe(s));
+
+// Init
+applyLang(currentLang);
 </script>
 </body>
 </html>
